@@ -1,7 +1,8 @@
 {
-    "cmake.sourceDirectory": "/home/m1311/dev/wayland_layer_shell/example/linux",
+    "cmake.sourceDirectory": "${workspaceFolder}/wayland_layer_shell/example/linux",
     "cmake.configureOnOpen": true,
     "files.associations": {
         "cstring": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

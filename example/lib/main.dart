@@ -4,7 +4,13 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final waylandLayerShellPlugin = WaylandLayerShell();
+  final isSupported = await waylandLayerShellPlugin.isLayerShellSupported();
+  if (isSupported) {
+    await waylandLayerShellPlugin.initialize(600, 200);
+  }
   runApp(const MyApp());
 }
 
@@ -31,8 +37,8 @@ class _MyAppState extends State<MyApp> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      platformVersion =
-          await _waylandLayerShellPlugin.getPlatformVersion() ?? 'Unknown platform version';
+      platformVersion = await _waylandLayerShellPlugin.getPlatformVersion() ??
+          'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }

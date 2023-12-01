@@ -7,6 +7,9 @@ cmake_minimum_required(VERSION 3.10)
 set(PROJECT_NAME "wayland_layer_shell")
 project(${PROJECT_NAME} LANGUAGES CXX)
 
+
+cmake_policy(SET CMP0079 NEW)
+
 # This value is used when generating builds using this plugin, so it must
 # not be changed.
 set(PLUGIN_NAME "wayland_layer_shell_plugin")
@@ -34,12 +37,16 @@ set_target_properties(${PLUGIN_NAME} PROPERTIES
   CXX_VISIBILITY_PRESET hidden)
 target_compile_definitions(${PLUGIN_NAME} PRIVATE FLUTTER_PLUGIN_IMPL)
 
+
+pkg_check_modules(GTKLAYERSHELL REQUIRED IMPORTED_TARGET gtk-layer-shell-0)
+
 # Source include directories and library dependencies. Add any plugin-specific
 # dependencies here.
 target_include_directories(${PLUGIN_NAME} INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(${PLUGIN_NAME} PRIVATE flutter)
 target_link_libraries(${PLUGIN_NAME} PRIVATE PkgConfig::GTK)
+target_link_libraries(${BINARY_NAME} PRIVATE PkgConfig::GTKLAYERSHELL)
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an
