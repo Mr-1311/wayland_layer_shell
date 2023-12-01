@@ -1,0 +1,7 @@
+{
+    "cmake.sourceDirectory": "/home/m1311/dev/wayland_layer_shell/example/linux",
+    "cmake.configureOnOpen": true,
+    "files.associations": {
+        "cstring": "cpp"
+    }
+}
