@@ -65,6 +65,20 @@ static FlMethodResponse *initialize(WaylandLayerShellPlugin *self, FlValue *args
   return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
 }
 
+static FlMethodResponse *set_layer(WaylandLayerShellPlugin *self, FlValue *args)
+{
+  int layer = fl_value_get_int(fl_value_lookup_string(args, "layer"));
+  gtk_layer_set_layer(get_window(self), static_cast<GtkLayerShellLayer>(layer));
+  g_autoptr(FlValue) result = fl_value_new_bool(true);
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
+static FlMethodResponse *get_layer(WaylandLayerShellPlugin *self)
+{
+  g_autoptr(FlValue) result = fl_value_new_int(gtk_layer_get_layer(get_window(self)));
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
 // Called when a method call is received from Flutter.
 static void wayland_layer_shell_plugin_handle_method_call(
     WaylandLayerShellPlugin *self,
@@ -86,6 +100,14 @@ static void wayland_layer_shell_plugin_handle_method_call(
   else if (strcmp(method, "initialize") == 0)
   {
     response = initialize(self, args);
+  }
+  else if (strcmp(method, "setLayer") == 0)
+  {
+    response = set_layer(self, args);
+  }
+  else if (strcmp(method, "getLayer") == 0)
+  {
+    response = get_layer(self);
   }
   else
   {

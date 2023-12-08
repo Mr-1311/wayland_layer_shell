@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:wayland_layer_shell/types.dart';
 import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final waylandLayerShellPlugin = WaylandLayerShell();
-  final isSupported = await waylandLayerShellPlugin.isLayerShellSupported();
-  if (isSupported) {
-    await waylandLayerShellPlugin.initialize(600, 200);
+  bool isSupported = await waylandLayerShellPlugin.initialize(600, 50);
+  if (!isSupported) {
+    runApp(const MaterialApp(home: Text('Not supported')));
+    return;
   }
+  await waylandLayerShellPlugin.setLayer(ShellLayer.layerOverlay);
+  waylandLayerShellPlugin.getLayer().then((value) => print(value));
   runApp(const MyApp());
 }
 
