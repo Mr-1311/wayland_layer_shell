@@ -122,7 +122,7 @@ static FlMethodResponse *set_anchor(WaylandLayerShellPlugin *self, FlValue *args
   return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
 }
 
-static FlMethodResponse *get_anchor(WaylandLayerShellPlugin *self)
+static FlMethodResponse *get_anchor(WaylandLayerShellPlugin *self, FlValue *args)
 {
   int edge = fl_value_get_int(fl_value_lookup_string(args, "edge"));
   g_autoptr(FlValue) result = fl_value_new_bool(gtk_layer_get_anchor(get_window(self), static_cast<GtkLayerShellEdge>(edge)));
@@ -173,7 +173,7 @@ static void wayland_layer_shell_plugin_handle_method_call(
   }
   else if (strcmp(method, "getAnchor") == 0)
   {
-    response = get_anchor(self);
+    response = get_anchor(self, args);
   }
   else
   {
