@@ -49,37 +49,34 @@ class WaylandLayerShell {
     await methodChannel.invokeMethod('setLayer', arguments);
   }
 
-  ///Returns: the current layer as [ShellLayer].
+  /// Returns: the current layer as [ShellLayer].
   Future<ShellLayer> getLayer() async {
     return ShellLayer
         .values[(await methodChannel.invokeMethod('getLayer')) as int];
   }
 
-  /*
-/**
- * gtk_layer_set_monitor:
- * @window: A layer surface.
- * @monitor: The output this layer surface will be placed on (%NULL to let the compositor decide).
- *
- * Set the output for the window to be placed on, or %NULL to let the compositor choose.
- * If the window is currently mapped, it will get remapped so the change can take effect.
- *
- * Default is %NULL
- */
-void gtk_layer_set_monitor (GtkWindow *window, GdkMonitor *monitor);
+  /// Returns: the list of all [Monitor]s on the system
+  Future<List<Monitor>> getMonitorList() async {
+    List<String> monitors =
+        List<String>.from(await methodChannel.invokeMethod('getMonitorList'));
+    return monitors.map((e) {
+      final i = e.indexOf(':');
+      return Monitor(int.parse(e.substring(0, i)), e.substring(i + 1));
+    }).toList();
+  }
 
-/**
- * gtk_layer_get_monitor:
- * @window: A layer surface.
- *
- * NOTE: To get which monitor the surface is actually on, use
- * gdk_display_get_monitor_at_window().
- *
- * Returns: (transfer none): the monitor this surface will/has requested to be on, can be %NULL.
- *
- * Since: 0.5
- */
-GdkMonitor *gtk_layer_get_monitor (GtkWindow *window);
+  /// @monitor: The [Monitor] that this surface will be placed on.
+  /// (null to let the compositor decide)
+  ///
+  /// Set the monitor this surface will be placed on.
+  Future<void> setMonitor(Monitor? monitor) async {
+    final Map<String, dynamic> arguments = {
+      'monitor': monitor?.id,
+    };
+    await methodChannel.invokeMethod('setMonitor', arguments);
+  }
+
+  /*
 
 /**
  * gtk_layer_set_anchor:

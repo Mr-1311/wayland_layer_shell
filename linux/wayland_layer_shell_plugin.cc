@@ -79,6 +79,30 @@ static FlMethodResponse *get_layer(WaylandLayerShellPlugin *self)
   return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
 }
 
+static FlMethodResponse *get_monitor_list(WaylandLayerShellPlugin *self)
+{
+  GdkDisplay *display = gdk_display_get_default();
+  g_autoptr(FlValue) result = fl_value_new_list();
+  for (int i = 0; i < gdk_display_get_n_monitors(display); i++)
+  {
+    GdkMonitor *monitor = gdk_display_get_monitor(display, i);
+    gchar *val = g_strdup_printf("%i:%s", i, gdk_monitor_get_model(monitor));
+    fl_value_append_take(result, fl_value_new_string(val));
+  }
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
+static FlMethodResponse *set_monitor(WaylandLayerShellPlugin *self, FlValue *args)
+{
+  GdkDisplay *display = gdk_display_get_default();
+  int id = fl_value_get_int(fl_value_lookup_string(args, "id"));
+  GdkMonitor *monitor = gdk_display_get_monitor(display, id);
+  gtk_layer_set_monitor(get_window(self), monitor);
+
+  g_autoptr(FlValue) result = fl_value_new_bool(true);
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
 // Called when a method call is received from Flutter.
 static void wayland_layer_shell_plugin_handle_method_call(
     WaylandLayerShellPlugin *self,
@@ -108,6 +132,14 @@ static void wayland_layer_shell_plugin_handle_method_call(
   else if (strcmp(method, "getLayer") == 0)
   {
     response = get_layer(self);
+  }
+  else if (strcmp(method, "getMonitorList") == 0)
+  {
+    response = get_monitor_list(self);
+  }
+  else if (strcmp(method, "setMonitor") == 0)
+  {
+    response = set_monitor(self, args);
   }
   else
   {

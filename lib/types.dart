@@ -20,3 +20,10 @@ enum ShellKeyboardMode {
   keyboardModeOnDemand, // The user should be able to focus and unfocues this window in an implementation defined way.
   keyboardModeEntryNumber, // Should not be used except to get the number of entries.
 }
+
+class Monitor {
+  final int id;
+  final String name;
+
+  Monitor(this.id, this.name);
+}

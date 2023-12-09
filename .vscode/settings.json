@@ -2,7 +2,9 @@
     "cmake.sourceDirectory": "${workspaceFolder}/wayland_layer_shell/example/linux",
     "cmake.configureOnOpen": true,
     "files.associations": {
-        "cstring": "cpp"
+        "cstring": "cpp",
+        "functional": "cpp",
+        "chrono": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

@@ -15,6 +15,7 @@ Future<void> main() async {
   }
   await waylandLayerShellPlugin.setLayer(ShellLayer.layerOverlay);
   waylandLayerShellPlugin.getLayer().then((value) => print(value));
+  waylandLayerShellPlugin.getMonitorList();
   runApp(const MyApp());
 }
 
