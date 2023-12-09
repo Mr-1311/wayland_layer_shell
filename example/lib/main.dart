@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:wayland_layer_shell/types.dart';
 import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 import 'package:wayland_layer_shell_example/monitor_select.dart';
 import 'package:wayland_layer_shell_example/set_anchors.dart';
+import 'package:wayland_layer_shell_example/set_layer.dart';
 import 'package:wayland_layer_shell_example/set_margins.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final waylandLayerShellPlugin = WaylandLayerShell();
-  bool isSupported = await waylandLayerShellPlugin.initialize(600, 400);
+  bool isSupported = await waylandLayerShellPlugin.initialize(600, 500);
   if (!isSupported) {
     runApp(const MaterialApp(home: Center(child: Text('Not supported'))));
     return;
   }
-  await waylandLayerShellPlugin.setLayer(ShellLayer.layerOverlay);
-  waylandLayerShellPlugin.getLayer().then((value) => print(value));
-  waylandLayerShellPlugin.getMonitorList();
   runApp(const MyApp());
 }
 
@@ -42,6 +39,8 @@ class _MyAppState extends State<MyApp> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               MonitorSelect(),
+              SizedBox(height: 20),
+              SetLayer(),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
