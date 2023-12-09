@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:wayland_layer_shell/types.dart';
 import 'package:wayland_layer_shell/wayland_layer_shell.dart';
 
-class MonitorSelect extends StatefulWidget {
-  const MonitorSelect({super.key});
+class SetMonitor extends StatefulWidget {
+  const SetMonitor({super.key});
 
   @override
-  State<MonitorSelect> createState() => _MonitorSelectState();
+  State<SetMonitor> createState() => _SetMonitorState();
 }
 
-class _MonitorSelectState extends State<MonitorSelect> {
+class _SetMonitorState extends State<SetMonitor> {
   List<Monitor> items = [];
   final _waylandLayerShellPlugin = WaylandLayerShell();
 

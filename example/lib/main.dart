@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:wayland_layer_shell/wayland_layer_shell.dart';
-import 'package:wayland_layer_shell_example/monitor_select.dart';
+import 'package:wayland_layer_shell_example/set_exclusive_zone.dart';
+import 'package:wayland_layer_shell_example/set_monitor.dart';
 import 'package:wayland_layer_shell_example/set_anchors.dart';
 import 'package:wayland_layer_shell_example/set_layer.dart';
 import 'package:wayland_layer_shell_example/set_margins.dart';
@@ -38,7 +39,14 @@ class _MyAppState extends State<MyApp> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              MonitorSelect(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SetMonitor(),
+                  SizedBox(width: 40),
+                  SetExclusiveZone(),
+                ],
+              ),
               SizedBox(height: 20),
               SetLayer(),
               SizedBox(height: 20),

@@ -156,7 +156,7 @@ static FlMethodResponse *set_exclusive_zone(WaylandLayerShellPlugin *self, FlVal
 
 static FlMethodResponse *get_exclusive_zone(WaylandLayerShellPlugin *self)
 {
-  g_autoptr(FlValue) result = fl_value_new_bool(gtk_layer_get_exclusive_zone(get_window(self)));
+  g_autoptr(FlValue) result = fl_value_new_int(gtk_layer_get_exclusive_zone(get_window(self)));
   return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
 }
 
