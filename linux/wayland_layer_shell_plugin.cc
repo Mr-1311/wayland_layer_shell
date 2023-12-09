@@ -129,6 +129,23 @@ static FlMethodResponse *get_anchor(WaylandLayerShellPlugin *self, FlValue *args
   return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
 }
 
+static FlMethodResponse *set_margin(WaylandLayerShellPlugin *self, FlValue *args)
+{
+  int edge = fl_value_get_int(fl_value_lookup_string(args, "edge"));
+  int margin_size = fl_value_get_int(fl_value_lookup_string(args, "margin_size"));
+
+  gtk_layer_set_margin(get_window(self), static_cast<GtkLayerShellEdge>(edge), margin_size);
+  g_autoptr(FlValue) result = fl_value_new_bool(true);
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
+static FlMethodResponse *get_margin(WaylandLayerShellPlugin *self, FlValue *args)
+{
+  int edge = fl_value_get_int(fl_value_lookup_string(args, "edge"));
+  g_autoptr(FlValue) result = fl_value_new_int(gtk_layer_get_margin(get_window(self), static_cast<GtkLayerShellEdge>(edge)));
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
 // Called when a method call is received from Flutter.
 static void wayland_layer_shell_plugin_handle_method_call(
     WaylandLayerShellPlugin *self,
@@ -174,6 +191,14 @@ static void wayland_layer_shell_plugin_handle_method_call(
   else if (strcmp(method, "getAnchor") == 0)
   {
     response = get_anchor(self, args);
+  }
+  else if (strcmp(method, "setMargin") == 0)
+  {
+    response = set_margin(self, args);
+  }
+  else if (strcmp(method, "getMargin") == 0)
+  {
+    response = get_margin(self, args);
   }
   else
   {

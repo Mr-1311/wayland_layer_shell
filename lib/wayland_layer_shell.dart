@@ -55,7 +55,7 @@ class WaylandLayerShell {
         .values[(await methodChannel.invokeMethod('getLayer')) as int];
   }
 
-  /// Returns: the list of all [Monitor]s on the system
+  /// Returns: the list of all [Monitor]s connected to the computer.
   Future<List<Monitor>> getMonitorList() async {
     List<String> monitors =
         List<String>.from(await methodChannel.invokeMethod('getMonitorList'));
@@ -102,30 +102,33 @@ class WaylandLayerShell {
     return await methodChannel.invokeMethod('getAnchor', arguments);
   }
 
+  /// @edge: The [ShellEdge] for which to set the margin.
+  /// @marginSize: The margin for @edge to be set.
+  ///
+  /// Set the margin for a specific @edge of a @window. Effects both surface's distance from
+  /// the edge and its exclusive zone size (if auto exclusive zone enabled).
+  ///
+  /// Default is 0 for each [ShellEdge]
+  Future<void> setMargin(ShellEdge edge, int marginSize) async {
+    final Map<String, dynamic> arguments = {
+      'edge': edge.index,
+      'margin_size': marginSize
+    };
+    await methodChannel.invokeMethod('setMargin', arguments);
+  }
+
+  /// @edge: The [ShellEdge] for which to get the margin.
+  ///
+  /// Returns: the size of the margin for the given edge.
+  Future<int> getMargin(ShellEdge edge) async {
+    final Map<String, dynamic> arguments = {
+      'edge': edge.index,
+    };
+    return await methodChannel.invokeMethod('getMargin', arguments);
+  }
+
   /*
 
-/**
- * gtk_layer_set_margin:
- * @window: A layer surface.
- * @edge: The #GtkLayerShellEdge for which to set the margin.
- * @margin_size: The margin for @edge to be set.
- *
- * Set the margin for a specific @edge of a @window. Effects both surface's distance from
- * the edge and its exclusive zone size (if auto exclusive zone enabled).
- *
- * Default is 0 for each #GtkLayerShellEdge
- */
-void gtk_layer_set_margin (GtkWindow *window, GtkLayerShellEdge edge, int margin_size);
-
-/**
- * gtk_layer_get_margin:
- * @window: A layer surface.
- *
- * Returns: the size of the margin for the given edge.
- *
- * Since: 0.5
- */
-int gtk_layer_get_margin (GtkWindow *window, GtkLayerShellEdge edge);
 
 /**
  * gtk_layer_set_exclusive_zone:
