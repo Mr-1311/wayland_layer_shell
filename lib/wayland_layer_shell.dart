@@ -76,31 +76,33 @@ class WaylandLayerShell {
     await methodChannel.invokeMethod('setMonitor', arguments);
   }
 
+  /// @edge: A [ShellEdge] this layer surface may be anchored to.
+  /// @anchor_to_edge: Whether or not to anchor this layer surface to @edge.
+  ///
+  /// Set whether this layer surface should be anchored to @edge.
+  /// - If two perpendicular edges are anchored, the surface with be anchored to that corner
+  /// - If two opposite edges are anchored, the window will be stretched across the screen in that direction
+  ///
+  /// Default is %FALSE for each [ShellEdge]
+  Future<void> setAnchor(ShellEdge edge, bool anchorToEdge) async {
+    final Map<String, dynamic> arguments = {
+      'edge': edge.index,
+      'anchor_to_edge': anchorToEdge
+    };
+    await methodChannel.invokeMethod('setAnchor', arguments);
+  }
+
+  /// @edge: A [ShellEdge] this layer surface may be anchored to.
+  ///
+  /// Returns: if this surface is anchored to the given edge.
+  Future<bool> getAnchor(ShellEdge edge) async {
+    final Map<String, dynamic> arguments = {
+      'edge': edge.index,
+    };
+    return await methodChannel.invokeMethod('getAnchor', arguments);
+  }
+
   /*
-
-/**
- * gtk_layer_set_anchor:
- * @window: A layer surface.
- * @edge: A #GtkLayerShellEdge this layer surface may be anchored to.
- * @anchor_to_edge: Whether or not to anchor this layer surface to @edge.
- *
- * Set whether @window should be anchored to @edge.
- * - If two perpendicular edges are anchored, the surface with be anchored to that corner
- * - If two opposite edges are anchored, the window will be stretched across the screen in that direction
- *
- * Default is %FALSE for each #GtkLayerShellEdge
- */
-void gtk_layer_set_anchor (GtkWindow *window, GtkLayerShellEdge edge, gboolean anchor_to_edge);
-
-/**
- * gtk_layer_get_anchor:
- * @window: A layer surface.
- *
- * Returns: if this surface is anchored to the given edge.
- *
- * Since: 0.5
- */
-gboolean gtk_layer_get_anchor (GtkWindow *window, GtkLayerShellEdge edge);
 
 /**
  * gtk_layer_set_margin:
