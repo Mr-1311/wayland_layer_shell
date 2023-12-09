@@ -26,4 +26,9 @@ class Monitor {
   final String name;
 
   Monitor(this.id, this.name);
+
+  @override
+  String toString() {
+    return '$id: $name';
+  }
 }

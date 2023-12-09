@@ -4,11 +4,12 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:wayland_layer_shell/types.dart';
 import 'package:wayland_layer_shell/wayland_layer_shell.dart';
+import 'package:wayland_layer_shell_example/monitor_select.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final waylandLayerShellPlugin = WaylandLayerShell();
-  bool isSupported = await waylandLayerShellPlugin.initialize(600, 50);
+  bool isSupported = await waylandLayerShellPlugin.initialize(600, 330);
   if (!isSupported) {
     runApp(const MaterialApp(home: Text('Not supported')));
     return;
@@ -66,7 +67,12 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Column(
+            children: [
+              const MonitorSelect(),
+              Text('Running on: $_platformVersion\n'),
+            ],
+          ),
         ),
       ),
     );

@@ -71,7 +71,7 @@ class WaylandLayerShell {
   /// Set the monitor this surface will be placed on.
   Future<void> setMonitor(Monitor? monitor) async {
     final Map<String, dynamic> arguments = {
-      'monitor': monitor?.id,
+      'id': monitor == null ? -1 : monitor.id,
     };
     await methodChannel.invokeMethod('setMonitor', arguments);
   }

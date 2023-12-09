@@ -96,6 +96,15 @@ static FlMethodResponse *set_monitor(WaylandLayerShellPlugin *self, FlValue *arg
 {
   GdkDisplay *display = gdk_display_get_default();
   int id = fl_value_get_int(fl_value_lookup_string(args, "id"));
+
+  if (id == -1)
+  {
+    gtk_layer_set_monitor(get_window(self), NULL);
+
+    g_autoptr(FlValue) result = fl_value_new_bool(true);
+    return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+  }
+
   GdkMonitor *monitor = gdk_display_get_monitor(display, id);
   gtk_layer_set_monitor(get_window(self), monitor);
 
