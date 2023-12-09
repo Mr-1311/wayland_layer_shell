@@ -127,55 +127,42 @@ class WaylandLayerShell {
     return await methodChannel.invokeMethod('getMargin', arguments);
   }
 
+  /// @exclusiveZone: The size of the exclusive zone.
+  ///
+  /// Set the size of the exclusive zone.
+  ///
+  /// Has no effect unless the surface is anchored to an edge. Requests that the compositor
+  /// does not place other surfaces within the given exclusive zone of the anchored edge.
+  /// For example, a panel can request to not be covered by maximized windows. See
+  /// wlr-layer-shell-unstable-v1.xml for details.
+  ///
+  /// Default is 0
+  Future<void> setExclusiveZone(int exclusiveZone) async {
+    final Map<String, dynamic> arguments = {'exclusive_zone': exclusiveZone};
+    await methodChannel.invokeMethod('setExclusiveZone', arguments);
+  }
+
+  /// Returns: the window's exclusive zone (which may have been set manually or automatically)
+  Future<int> getExclusiveZone() async {
+    return await methodChannel.invokeMethod('getExclusiveZone');
+  }
+
+  /// Enable auto exclusive zone
+  ///
+  /// When auto exclusive zone is enabled, exclusive zone is automatically set to the
+  /// size of the @window + relevant margin. To disable auto exclusive zone, just set the
+  /// exclusive zone to 0 or any other fixed value.
+  Future<void> enableAutoExclusiveZone() async {
+    await methodChannel.invokeMethod('enableAutoExclusiveZone');
+  }
+
+  /// Returns: if the surface's exclusive zone is set to change based on the window's size
+  Future<bool> isAutoExclusiveZoneEnabled() async {
+    return await methodChannel.invokeMethod('isAutoExclusiveZoneEnabled');
+  }
+
   /*
 
-
-/**
- * gtk_layer_set_exclusive_zone:
- * @window: A layer surface.
- * @exclusive_zone: The size of the exclusive zone.
- *
- * Has no effect unless the surface is anchored to an edge. Requests that the compositor
- * does not place other surfaces within the given exclusive zone of the anchored edge.
- * For example, a panel can request to not be covered by maximized windows. See
- * wlr-layer-shell-unstable-v1.xml for details.
- *
- * Default is 0
- */
-void gtk_layer_set_exclusive_zone (GtkWindow *window, int exclusive_zone);
-
-/**
- * gtk_layer_get_exclusive_zone:
- * @window: A layer surface.
- *
- * Returns: the window's exclusive zone (which may have been set manually or automatically)
- *
- * Since: 0.5
- */
-int gtk_layer_get_exclusive_zone (GtkWindow *window);
-
-/**
- * gtk_layer_auto_exclusive_zone_enable:
- * @window: A layer surface.
- *
- * When auto exclusive zone is enabled, exclusive zone is automatically set to the
- * size of the @window + relevant margin. To disable auto exclusive zone, just set the
- * exclusive zone to 0 or any other fixed value.
- *
- * NOTE: you can control the auto exclusive zone by changing the margin on the non-anchored
- * edge. This behavior is specific to gtk-layer-shell and not part of the underlying protocol
- */
-void gtk_layer_auto_exclusive_zone_enable (GtkWindow *window);
-
-/**
- * gtk_layer_auto_exclusive_zone_is_enabled:
- * @window: A layer surface.
- *
- * Returns: if the surface's exclusive zone is set to change based on the window's size
- *
- * Since: 0.5
- */
-gboolean gtk_layer_auto_exclusive_zone_is_enabled (GtkWindow *window);
 
 /**
  * gtk_layer_set_keyboard_mode:

@@ -146,6 +146,33 @@ static FlMethodResponse *get_margin(WaylandLayerShellPlugin *self, FlValue *args
   return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
 }
 
+static FlMethodResponse *set_exclusive_zone(WaylandLayerShellPlugin *self, FlValue *args)
+{
+  int exclusive_zone = fl_value_get_int(fl_value_lookup_string(args, "exclusive_zone"));
+  gtk_layer_set_exclusive_zone(get_window(self), exclusive_zone);
+  g_autoptr(FlValue) result = fl_value_new_bool(true);
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
+static FlMethodResponse *get_exclusive_zone(WaylandLayerShellPlugin *self)
+{
+  g_autoptr(FlValue) result = fl_value_new_bool(gtk_layer_get_exclusive_zone(get_window(self)));
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
+static FlMethodResponse *enable_auto_exclusive_zone(WaylandLayerShellPlugin *self)
+{
+  gtk_layer_auto_exclusive_zone_enable(get_window(self));
+  g_autoptr(FlValue) result = fl_value_new_bool(true);
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
+static FlMethodResponse *is_auto_exclusive_zone_enabled(WaylandLayerShellPlugin *self)
+{
+  g_autoptr(FlValue) result = fl_value_new_bool(gtk_layer_auto_exclusive_zone_is_enabled(get_window(self)));
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
 // Called when a method call is received from Flutter.
 static void wayland_layer_shell_plugin_handle_method_call(
     WaylandLayerShellPlugin *self,
@@ -199,6 +226,22 @@ static void wayland_layer_shell_plugin_handle_method_call(
   else if (strcmp(method, "getMargin") == 0)
   {
     response = get_margin(self, args);
+  }
+  else if (strcmp(method, "setExclusiveZone") == 0)
+  {
+    response = set_exclusive_zone(self, args);
+  }
+  else if (strcmp(method, "getExclusiveZone") == 0)
+  {
+    response = get_exclusive_zone(self);
+  }
+  else if (strcmp(method, "enableAutoExclusiveZone") == 0)
+  {
+    response = enable_auto_exclusive_zone(self);
+  }
+  else if (strcmp(method, "isAutoExclusiveZoneEnabled") == 0)
+  {
+    response = is_auto_exclusive_zone_enabled(self);
   }
   else
   {
