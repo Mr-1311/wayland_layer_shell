@@ -43,9 +43,10 @@ class _SetLayerState extends State<SetLayer> {
     );
   }
 
-  _onSelectionChanged(Set<ShellLayer> layer) {
+  _onSelectionChanged(Set<ShellLayer> layer) async {
     WaylandLayerShell waylandLayerShellPlugin = WaylandLayerShell();
-    waylandLayerShellPlugin.setLayer(layer.first);
+    await waylandLayerShellPlugin.setLayer(layer.first);
+    print('layer: ${await waylandLayerShellPlugin.getLayer()}');
     setState(() {
       this.layer = layer.first;
     });

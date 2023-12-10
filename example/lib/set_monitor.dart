@@ -36,13 +36,18 @@ class _SetMonitorState extends State<SetMonitor> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownMenu(
-        onSelected: (value) => setMonitor(int.parse(value!)),
-        initialSelection: '-1',
-        dropdownMenuEntries: items.map<DropdownMenuEntry<String>>((mon) {
-          return DropdownMenuEntry(
-              value: mon.id.toString(), label: mon.toString());
-        }).toList()
-          ..add(const DropdownMenuEntry(value: '-1', label: 'default')));
+    return Column(
+      children: [
+        const Text('Set Monitor'),
+        DropdownMenu(
+            onSelected: (value) => setMonitor(int.parse(value!)),
+            initialSelection: '-1',
+            dropdownMenuEntries: items.map<DropdownMenuEntry<String>>((mon) {
+              return DropdownMenuEntry(
+                  value: mon.id.toString(), label: mon.toString());
+            }).toList()
+              ..add(const DropdownMenuEntry(value: '-1', label: 'default'))),
+      ],
+    );
   }
 }
