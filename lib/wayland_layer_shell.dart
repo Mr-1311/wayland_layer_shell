@@ -161,56 +161,20 @@ class WaylandLayerShell {
     return await methodChannel.invokeMethod('isAutoExclusiveZoneEnabled');
   }
 
-  /*
+  /// @mode: The type of keyboard interactivity requested.
+  ///
+  /// Sets if/when @window should receive keyboard events from the compositor, see
+  /// [ShellKeyboardMode] for details.
+  ///
+  /// Default is [ShellKeyboardMode.keyboardModeNone]
+  Future<void> setKeyboardMode(ShellKeyboardMode mode) async {
+    final Map<String, dynamic> arguments = {'keyboard_mode': mode.index};
+    await methodChannel.invokeMethod('setKeyboardMode', arguments);
+  }
 
-
-/**
- * gtk_layer_set_keyboard_mode:
- * @window: A layer surface.
- * @mode: The type of keyboard interactivity requested.
- *
- * Sets if/when @window should receive keyboard events from the compositor, see
- * GtkLayerShellKeyboardMode for details.
- *
- * Default is %GTK_LAYER_SHELL_KEYBOARD_MODE_NONE
- *
- * Since: 0.6
- */
-void gtk_layer_set_keyboard_mode (GtkWindow *window, GtkLayerShellKeyboardMode mode);
-
-/**
- * gtk_layer_get_keyboard_mode:
- * @window: A layer surface.
- *
- * Returns: current keyboard interactivity mode for @window.
- *
- * Since: 0.6
- */
-GtkLayerShellKeyboardMode gtk_layer_get_keyboard_mode (GtkWindow *window);
-
-/**
- * gtk_layer_set_keyboard_interactivity:
- * @window: A layer surface.
- * @interactivity: Whether the layer surface should receive keyboard events.
- *
- * Whether the @window should receive keyboard events from the compositor.
- *
- * Default is %FALSE
- *
- * Deprecated: 0.6: Use gtk_layer_set_keyboard_mode () instead.
- */
-void gtk_layer_set_keyboard_interactivity (GtkWindow *window, gboolean interactivity);
-
-/**
- * gtk_layer_get_keyboard_interactivity:
- * @window: A layer surface.
- *
- * Returns: if keyboard interactivity is enabled
- *
- * Since: 0.5
- * Deprecated: 0.6: Use gtk_layer_get_keyboard_mode () instead.
- */
-gboolean gtk_layer_get_keyboard_interactivity (GtkWindow *window);
-
-    */
+  /// Returns: current keyboard interactivity mode for window
+  Future<ShellKeyboardMode> getKeyboardMode() async {
+    return ShellKeyboardMode
+        .values[(await methodChannel.invokeMethod('getKeyboardMode')) as int];
+  }
 }

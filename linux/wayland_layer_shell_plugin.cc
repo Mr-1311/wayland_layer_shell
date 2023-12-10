@@ -173,6 +173,20 @@ static FlMethodResponse *is_auto_exclusive_zone_enabled(WaylandLayerShellPlugin 
   return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
 }
 
+static FlMethodResponse *set_keyboard_mode(WaylandLayerShellPlugin *self, FlValue *args)
+{
+  int keyboard_mode = fl_value_get_int(fl_value_lookup_string(args, "keyboard_mode"));
+  gtk_layer_set_keyboard_mode(get_window(self), static_cast<GtkLayerShellKeyboardMode>(keyboard_mode));
+  g_autoptr(FlValue) result = fl_value_new_bool(true);
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
+static FlMethodResponse *get_keyboard_mode(WaylandLayerShellPlugin *self)
+{
+  g_autoptr(FlValue) result = fl_value_new_int(gtk_layer_get_keyboard_mode(get_window(self)));
+  return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
+}
+
 // Called when a method call is received from Flutter.
 static void wayland_layer_shell_plugin_handle_method_call(
     WaylandLayerShellPlugin *self,
@@ -242,6 +256,14 @@ static void wayland_layer_shell_plugin_handle_method_call(
   else if (strcmp(method, "isAutoExclusiveZoneEnabled") == 0)
   {
     response = is_auto_exclusive_zone_enabled(self);
+  }
+  else if (strcmp(method, "setKeyboardMode") == 0)
+  {
+    response = set_keyboard_mode(self, args);
+  }
+  else if (strcmp(method, "getKeyboardMode") == 0)
+  {
+    response = get_keyboard_mode(self);
   }
   else
   {
