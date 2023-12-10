@@ -17,6 +17,13 @@ Layer Shell is not supported on:
 
 ## Getting Started
 
+Add this to your project's pubspec.yaml file:
+
+```yaml
+dependencies:
+  wayland_layer_shell: ^1.0.1
+```
+
 Using the gtk header bar and displaying the gtk window before initializing the layer surface prevents the initialization of the layer surface, hence some changes are required in Flutter's gtk window initialization code.
 
 Update the file `linux/my_application.cc` as follows:
