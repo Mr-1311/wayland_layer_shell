@@ -1,3 +1,4 @@
-## 0.0.1
+# Changelog
 
-* TODO: Describe initial release.
+## [1.0.0] - 10 dec 2023
+Initial release
