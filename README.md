@@ -26,7 +26,7 @@ dependencies:
 
 Using the gtk header bar and displaying the gtk window before initializing the layer surface prevents the initialization of the layer surface, hence some changes are required in Flutter's gtk window initialization code.
 
-Update the file `linux/my_application.cc` as follows:
+Update the file `linux/runner/my_application.cc` as follows:
 
 ```diff
 ...
@@ -57,4 +57,4 @@ This plugin relies on the [gtk-layer-shell-0](https://github.com/wmww/gtk-layer-
 
 ## Usage
 
-For usage check out the example app inside `example` folder.
+For usage check out the example app inside [example](./example) folder.
